@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="~{component/config :: config}"></th:block>
+</head>
+<body>
+<div th:replace="~{component/header :: header}"></div>
+<div th:replace="~{component/nav :: nav}"></div>
+<h2>boardDetail.html</h2>
+<div class="container">
+    <input type="hidden" name="id" th:value="${board.id}">
+    <input type="text" name="boardWriter" placeholder="작성자" readonly th:value="${board.boardWriter}"> <br>
+    <input type="text" name="boardTitle" placeholder="게시글 제목" readonly th:value="${board.boardTitle}"> <br>
+    <textarea name="boardContents" cols="30" rows="10" readonly th:value="${board.boardContents}" th:text="${board.boardContents}"></textarea> <br>
+    <button class="btn btn-secondary" onclick="fn_list()">홈으로</button>
+</div>
+<div th:replace="~{component/footer :: footer}"></div>
+</body>
+</html>

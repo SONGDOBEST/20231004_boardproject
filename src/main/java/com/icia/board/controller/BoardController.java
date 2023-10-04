@@ -5,12 +5,10 @@ import com.icia.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/board")
@@ -35,5 +33,26 @@ public class BoardController {
         return"boardPages/boardList";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping ("/{id}")
+    public String findById(@PathVariable("id") Long Id, Model model){
+        try{
+            BoardDTO boardDTO = boardService.findById(Id);
+            boardDTO.setBoardHits(boardDTO.getBoardHits()+1);
+            boardService.update(boardDTO);
+            model.addAttribute("board", boardDTO);
+            return "boardPages/boardDetail";
+        }catch(NoSuchElementException e){
+            return "boardPages/NotFound";
+        }catch(Exception e){
+            return "boardPages/NotFound";
+        }
+    }
+    @GetMapping("/update/{id}")
+    public String updateForm(@PathVariable("id") Long Id, Model model){
+        try{
+            BoardDTO boardDTO = boardService.findById(Id);
+            model.addAttribute("board", boardDTO);
+            return "boardPages/boardUpdate";
+        }catch
+    }
 }
