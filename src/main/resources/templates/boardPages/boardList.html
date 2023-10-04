@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{component/config :: config}"></th:block>
+</head>
+<body>
+<div th:replace="~{component/header :: header}"></div>
+<div th:replace="~{component/nav :: nav}"></div>
+<h2>boardList.html</h2>
+
+<div class="container">
+    <table class="table table-striped">
+        <tr>
+            <th>id</th>
+            <th>작성자</th>
+            <th>제목</th>
+            <th>조회수</th>
+        </tr>
+        <tr th:each="board:${boardList}">
+            <td th:text="${board.id}"></td>
+            <td th:text="${board.boardWriter}"></td>
+            <td>
+                <a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a>
+            </td>
+            <td th:text="${board.boardHits}"></td>
+        </tr>
+    </table>
+</div>
+<div th:replace="~{component/footer :: footer}"></div>
+</body>
+</html>
