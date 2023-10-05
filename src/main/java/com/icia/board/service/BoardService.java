@@ -1,14 +1,14 @@
 package com.icia.board.service;
 
 import com.icia.board.dto.BoardDTO;
-import com.icia.board.entity.BoardEntity;
+import com.icia.entity.BoardEntity;
 import com.icia.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -21,13 +21,18 @@ public class BoardService {
 
     }
 
-    public List<BoardDTO> findAll() {
-        List<BoardDTO> boardDTOList = new ArrayList<>();
-        List<BoardEntity> boardEntityList = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
-        for(BoardEntity boardEntity: boardEntityList){
-            boardDTOList.add(BoardDTO.toDTO(boardEntity));
-        }
-        return boardDTOList;
+    public Page<BoardDTO> findAll(int page) {
+        page = page - 1;
+        int pageLimit = 5;
+        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        Page<BoardDTO> boardList = boardEntities.map(boardEntity ->
+                BoardDTO.builder()
+                        .id(boardEntity.getId())
+                        .boardTitle(boardEntity.getBoardTitle())
+                        .boardWriter(boardEntity.getBoardWriter())
+                        .boardHits(boardEntity.getBoardHits())
+                        .build());
+        return boardList;
     }
 
     public BoardDTO findById(Long id) {
@@ -38,5 +43,9 @@ public class BoardService {
     public void update(BoardDTO boardDTO) {
         BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
         boardRepository.save(boardEntity);
+    }
+
+    public void delete(Long id) {
+        boardRepository.deleteById(id);
     }
 }

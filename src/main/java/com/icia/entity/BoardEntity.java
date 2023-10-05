@@ -1,4 +1,4 @@
-package com.icia.board.entity;
+package com.icia.entity;
 
 import com.icia.board.dto.BoardDTO;
 import lombok.AccessLevel;
@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter(AccessLevel.PRIVATE)
 @Entity
 @Table(name = "board_table")
-public class BoardEntity {
+public class BoardEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

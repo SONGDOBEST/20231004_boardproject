@@ -6,21 +6,49 @@
 <body>
 <div th:replace="~{component/header :: header}"></div>
 <div th:replace="~{component/nav :: nav}"></div>
-<h2>boardSave.html</h2>
+<h2>boardUpdate.html</h2>
 <div class="container">
     <div class="update_area">
         <form action="/board/update" method="post">
             <input type="hidden" name="id" th:value="${board.id}">
-            <input type="text" name="boardWriter" placeholder="작성자" th:text="${board.boardWriter}" readonly> <br>
-            <input type="text" name="boardPass" placeholder="게시글 비밀번호"> <br>
-            <input type="text" name="boardTitle" placeholder="게시글 제목" th:text="${board.boardTitle}"> <br>
+            <input type="hidden" name="boardHits" th:value="${board.boardHits}">
+            작성자: <input type="text" name="boardWriter" placeholder="작성자" th:value="${board.boardWriter}" readonly> <br>
+            비밀번호: <input type="text" name="boardPass" placeholder="게시글 비밀번호"> <br>
+            제목: <input type="text" name="boardTitle" placeholder="게시글 제목" th:value="${board.boardTitle}"> <br>
+            내용:<br>
             <textarea type="text" name="boardContents" cols="30" rows="10" th:text="${board.boardContents}"></textarea>
             <br>
-            <input type="submit" value="수정">
+            <input type="button" class="btn btn-primary" onclick="board_update()" value="수정">
         </form>
     </div>
 
 </div>
 <div th:replace="~{component/footer :: footer}"></div>
 </body>
+<script th:inline="javascript">
+    const board_update = () => {
+        const id = document.querySelector('[name="id"]').value;
+        const boardWriter = document.querySelector('[name="boardWriter"]').value;
+        const boardTitle = document.querySelector('[name="boardTitle"]').value;
+        const boardPass = document.querySelector('[name="boardPass"]').value;
+        const boardHits = document.querySelector('[name="boardHits"]').value;
+        const boardContents = document.querySelector('[name="boardContents"]').value;
+        axios({
+            method:"put",
+            url:`/board/${id}`,
+            data: {
+                id: id,
+                boardTitle : boardTitle,
+                boardWriter : boardWriter,
+                boardContents : boardContents,
+                boardHits : boardHits,
+                boardPass : boardPass
+            }
+        }).then(res =>{
+            location.href=`/board/${id}`;
+        }).catch(err =>{
+            alert("수정 실패!");
+        })
+    }
+</script>
 </html>
