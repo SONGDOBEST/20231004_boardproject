@@ -1,36 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <th:block th:replace="~{component/config :: config}"></th:block>
+    <th:block th:replace="~{component/config :: config}"></th:block>
 </head>
 <body>
 <div th:replace="~{component/header :: header}"></div>
 <div th:replace="~{component/nav :: nav}"></div>
 <h2>boardSave.html</h2>
 <div class="container">
-  <form class="check_area">
-    <input type="text" name="boardWriter" placeholder="작성자" th:text="${board.boardWriter}" readonly> <br>
-    <input type="text" name="boardPass" placeholder="게시글 비밀번호"> <br>
-    <input type="submit" onclick="fn_check()">
-  </form>
-  <th:block th:if="${board.boardPass=='#boardPass.value'}">
     <div class="update_area">
-      <form action="/board/update" method="post">
-        <input type="hidden" name="id" th:value="${board.id}">
-        <input type="text" name="boardWriter" placeholder="작성자" th:text="${board.boardWriter}" readonly> <br>
-        <input type="text" name="boardPass" placeholder="게시글 비밀번호"> <br>
-        <input type="text" name="boardTitle" placeholder="게시글 제목" th:text="${board.boardTitle}"> <br>
-        <textarea type="text" name="boardContents" cols="30" rows="10" th:text="${board.boardContents}"></textarea> <br>
-        <input type="submit" value="수정">
-      </form>
+        <form action="/board/update" method="post">
+            <input type="hidden" name="id" th:value="${board.id}">
+            <input type="text" name="boardWriter" placeholder="작성자" th:text="${board.boardWriter}" readonly> <br>
+            <input type="text" name="boardPass" placeholder="게시글 비밀번호"> <br>
+            <input type="text" name="boardTitle" placeholder="게시글 제목" th:text="${board.boardTitle}"> <br>
+            <textarea type="text" name="boardContents" cols="30" rows="10" th:text="${board.boardContents}"></textarea>
+            <br>
+            <input type="submit" value="수정">
+        </form>
     </div>
-  </th:block>
+
 </div>
 <div th:replace="~{component/footer :: footer}"></div>
 </body>
-<script th:inline="javascript">
-  const fn_check = () => {
-
-  }
-</script>
 </html>

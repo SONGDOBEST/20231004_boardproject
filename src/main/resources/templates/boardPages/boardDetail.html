@@ -12,8 +12,55 @@
     <input type="text" name="boardWriter" placeholder="작성자" readonly th:value="${board.boardWriter}"> <br>
     <input type="text" name="boardTitle" placeholder="게시글 제목" readonly th:value="${board.boardTitle}"> <br>
     <textarea name="boardContents" cols="30" rows="10" readonly th:value="${board.boardContents}" th:text="${board.boardContents}"></textarea> <br>
-    <button class="btn btn-secondary" onclick="fn_list()">홈으로</button>
+    <div class="btn-area">
+        <button class="btn btn-secondary" onclick="fn_list()">홈으로</button>
+        <button class="btn btn-warning" onclick="fn_update()">수정</button>
+        <button class="btn btn-danger" onclick="fn_delete()">삭제</button>
+    </div>
+    <div id="update-pass-check" style="display:none">
+        <input type="text" id="board-update-pass" placeholder="비밀번호">
+        <input type="button" onclick="update_pass_check()" value="확인">
+    </div>
+    <div id="delete-pass-check" style="display:none">
+        <input type="text" id="board-delete-pass" placeholder="비밀번호">
+        <input type="button" onclick="delete_pass_check()" value="확인">
+    </div>
+
 </div>
 <div th:replace="~{component/footer :: footer}"></div>
 </body>
+<script th:inline="javascript">
+    const fn_list = () => {
+        location.href="/board";
+    }
+
+    const fn_update = () => {
+        const passCheckInput = document.getElementById("update-pass-check");
+        passCheckInput.style.display = "block"; //화면에 보여짐(초기 상태는 none이기 때문에 보이지 않음)
+    }
+    const update_pass_check = () => {
+        const passInput = document.getElementById("board-update-pass").value;
+        const passDB = [[${board.boardPass}]];
+        const id = [[${board.id}]];
+        if(passInput==passDB){
+            location.href=`/board/update/${id}`;
+        }else{
+            alert("비밀번호가 일치하지 않습니다!");
+        }
+    }
+    const fn_delete = () => {
+        const passCheckInput = document.getElementById("delete-pass-check");
+        passCheckInput.style.display = "block"; //화면에 보여짐(초기 상태는 none이기 때문에 보이지 않음)
+    }
+    const delete_pass_check = () => {
+        const passInput = document.getElementById("board-delete-pass").value;
+        const passDB = [[${board.boardPass}]];
+        const id = [[${board.id}]];
+        if(passInput==passDB){
+            location.href=`/board/delete/${id}`;
+        }else{
+            alert("비밀번호가 일치하지 않습니다!");
+        }
+    }
+</script>
 </html>

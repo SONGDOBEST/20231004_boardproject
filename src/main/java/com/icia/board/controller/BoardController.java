@@ -53,6 +53,21 @@ public class BoardController {
             BoardDTO boardDTO = boardService.findById(Id);
             model.addAttribute("board", boardDTO);
             return "boardPages/boardUpdate";
-        }catch
+        }catch(NoSuchElementException e){
+            return "boardPages/NotFound";
+        }catch(Exception e){
+            return "boardPages/NotFound";
+        }
+    }
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable("id") Long id, @RequestParam("passCheck") String passCheck, @ModelAttribute BoardDTO boardDTO){
+        if(passCheck == boardDTO.getBoardPass()){
+            boardService.update(boardDTO);
+            return "boardPages/boardDetail";
+        }else{
+            return "boardPages/boardNotfound";
+        }
+
+
     }
 }
